@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="theme-color" content="#6D28D9">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Pulpito Show">
+<title>Pulpito Show</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+<style>
+:root {
+  --pu:#7C3AED;--pu2:#5B21B6;--pul:#EDE9FE;
+  --pk:#EC4899;--pkl:#FCE7F3;
+  --tl:#0D9488;--tll:#CCFBF1;
+  --ye:#F59E0B;--yel:#FEF3C7;
+  --gn:#16A34A;--gnl:#DCFCE7;
+  --dk:#1E1B4B;--gy:#6B7280;
+  --bg:#F5F0FF;--wh:#fff;
+  --sh:0 4px 24px rgba(109,40,217,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--dk);min-height:100vh;overflow-x:hidden}
+.tb{background:linear-gradient(135deg,var(--pu2),var(--pu) 60%,var(--pk));padding:16px 18px 12px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:100;box-shadow:0 4px 20px rgba(91,33,182,.35)}
+.tb-logo{font-family:'Fredoka One',cursive;font-size:20px;color:#fff;line-height:1}
+.tb-sub{font-size:11px;color:rgba(255,255,255,.75);font-weight:600}
+.tb-date{margin-left:auto;background:rgba(255,255,255,.2);color:#fff;font-size:11px;font-weight:800;padding:4px 10px;border-radius:20px}
+.tabs{display:flex;background:#fff;border-bottom:2px solid var(--pul);position:sticky;top:64px;z-index:99}
+.tab{flex:1;padding:11px 6px 9px;text-align:center;font-size:11px;font-weight:800;color:var(--gy);cursor:pointer;border-bottom:3px solid transparent;transition:all .2s;user-select:none}
+.tab .ti{font-size:17px;display:block;margin-bottom:2px}
+.tab.act{color:var(--pu);border-bottom-color:var(--pu)}
+.main{padding:14px;max-width:480px;margin:0 auto}
+.page{display:none}
+.page.act{display:block;animation:fi .22s ease}
+@keyframes fi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.card{background:#fff;border-radius:16px;box-shadow:var(--sh);padding:16px;margin-bottom:12px}
+.ch{display:flex;align-items:center;gap:9px;margin-bottom:14px;padding-bottom:11px;border-bottom:2px solid var(--pul)}
+.ch h2{font-size:15px;font-weight:900;color:var(--pu2)}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.f3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.fg{margin-bottom:11px}
+label{display:block;font-size:12px;font-weight:800;color:var(--pu2);margin-bottom:4px}
+input,select,textarea{width:100%;padding:10px 12px;border:2px solid #E5E7EB;border-radius:10px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:600;color:var(--dk);background:#FAFAFA;transition:border-color .2s;-webkit-appearance:none;outline:none}
+input:focus,select:focus{border-color:var(--pu);background:#fff}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237C3AED' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:34px}
+.ss{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:11px}
+.so{border:2px solid #E5E7EB;border-radius:10px;padding:11px 8px;text-align:center;cursor:pointer;transition:all .2s;background:#FAFAFA}
+.so .se{font-size:22px;display:block;margin-bottom:3px}
+.so .sn{font-size:12px;font-weight:800;color:var(--gy)}
+.so .sd{font-size:10px;color:var(--gy);margin-top:2px}
+.so.sel{border-color:var(--pu);background:var(--pul)}
+.so.sel .sn{color:var(--pu2)}
+.ps{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:11px}
+.po{border:2px solid #E5E7EB;border-radius:10px;padding:9px 5px;text-align:center;cursor:pointer;transition:all .2s;background:#FAFAFA}
+.po .pi{font-size:18px;display:block}
+.po .pn{font-size:11px;font-weight:800;color:var(--gy);margin-top:2px}
+.po.spl{border-color:#2563EB;background:#EFF6FF}.po.spl .pn{color:#2563EB}
+.po.sya{border-color:var(--pu);background:var(--pul)}.po.sya .pn{color:var(--pu2)}
+.po.sef{border-color:var(--gn);background:var(--gnl)}.po.sef .pn{color:var(--gn)}
+.pg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:4px}
+.pb{border-radius:10px;padding:10px 6px;text-align:center}
+.pb.tot{background:var(--pul)}.pb.ade{background:var(--yel)}.pb.sal{background:var(--tll)}
+.pb label{margin-bottom:3px}
+.pb.tot label{color:var(--pu2);font-size:10px}.pb.ade label{color:#92400E;font-size:10px}.pb.sal label{color:var(--tl);font-size:10px}
+.pb input{background:transparent;border:none;font-size:16px;font-weight:900;text-align:center;padding:0;box-shadow:none!important}
+.pb.tot input{color:var(--pu2)}.pb.ade input{color:#92400E}.pb.sal input{color:var(--tl)}
+.btn{width:100%;padding:13px;border:none;border-radius:10px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:900;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:7px;letter-spacing:.2px;text-decoration:none}
+.btn:active{transform:scale(.97)}
+.bp{background:linear-gradient(135deg,var(--pu),var(--pk));color:#fff;box-shadow:0 4px 16px rgba(124,58,237,.35)}
+.bs{background:var(--pul);color:var(--pu2)}
+.bt{background:linear-gradient(135deg,var(--tl),#0891B2);color:#fff}
+.bgg{background:linear-gradient(135deg,var(--gn),#15803D);color:#fff}
+.bcal{background:linear-gradient(135deg,#1a73e8,#0d47a1);color:#fff;font-size:15px;padding:15px;box-shadow:0 4px 18px rgba(26,115,232,.4)}
+.bsm{padding:8px 14px;font-size:12px;width:auto;border-radius:8px}
+.br{display:flex;gap:9px;margin-top:5px}
+.br .btn{flex:1}
+.dv{height:1px;background:var(--pul);margin:12px 0}
+.pill{display:inline-flex;align-items:center;gap:5px;background:var(--pul);color:var(--pu2);font-size:12px;font-weight:800;padding:4px 11px;border-radius:20px;margin-bottom:10px}
+.sg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.sc{background:#fff;border-radius:16px;padding:15px;box-shadow:var(--sh)}
+.sl{font-size:11px;font-weight:800;color:var(--gy);letter-spacing:.5px;text-transform:uppercase}
+.sv{font-size:22px;font-weight:900;margin-top:3px;line-height:1}
+.ss2{font-size:11px;color:var(--gy);margin-top:3px;font-weight:600}
+.sc.spu .sv{color:var(--pu)}.sc.spk .sv{color:var(--pk)}.sc.stl .sv{color:var(--tl)}.sc.sye .sv{color:#D97706}
+.ci{background:#fff;border-radius:16px;box-shadow:var(--sh);padding:13px 15px;margin-bottom:9px;display:flex;align-items:center;gap:11px;cursor:pointer;transition:all .2s;border-left:4px solid var(--pu)}
+.ci:active{transform:scale(.98)}
+.ci.pend{border-left-color:var(--ye)}.ci.done{border-left-color:var(--gn)}
+.cav{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--pul),var(--pkl));display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
+.cn{flex:1;min-width:0}
+.cnm{font-size:14px;font-weight:800;color:var(--dk);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cmt{font-size:12px;color:var(--gy);margin-top:2px;font-weight:600}
+.bdg{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:800;padding:3px 7px;border-radius:20px}
+.bpu{background:var(--pul);color:var(--pu2)}.bye{background:var(--yel);color:#92400E}.bgn{background:var(--gnl);color:var(--gn)}.bpk{background:var(--pkl);color:#9D174D}
+.pt{display:flex;background:var(--pul);border-radius:9px;padding:3px;margin-bottom:13px}
+.ptt{flex:1;padding:7px;text-align:center;font-size:12px;font-weight:800;color:var(--gy);border-radius:7px;cursor:pointer;transition:all .2s;user-select:none}
+.ptt.act{background:#fff;color:var(--pu2);box-shadow:0 2px 8px rgba(124,58,237,.15)}
+.upi{display:flex;gap:11px;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--pul)}
+.upi:last-child{border-bottom:none}
+.upd{background:linear-gradient(135deg,var(--pu),var(--pk));color:#fff;border-radius:9px;padding:5px 9px;text-align:center;min-width:44px;flex-shrink:0}
+.upd .dy{font-size:19px;font-weight:900;line-height:1}
+.upd .mn{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+.upin{flex:1}.upt{font-size:14px;font-weight:800;color:var(--dk)}.ups{font-size:12px;color:var(--gy);font-weight:600;margin-top:2px}
+.tbn{background:linear-gradient(135deg,var(--pu2),var(--pu) 50%,var(--pk));border-radius:16px;padding:18px;color:#fff;margin-bottom:12px;box-shadow:0 8px 40px rgba(109,40,217,.18)}
+.cbr{display:flex;align-items:center;gap:9px;margin-bottom:9px}
+.cbl{font-size:12px;font-weight:700;color:var(--gy);width:34px;text-align:right;flex-shrink:0}
+.cbt{flex:1;background:var(--pul);border-radius:7px;height:21px;overflow:hidden}
+.cbf{height:100%;border-radius:7px;background:linear-gradient(90deg,var(--pu),var(--pk));display:flex;align-items:center;padding-left:8px;font-size:10px;font-weight:800;color:#fff;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.cbv{font-size:11px;font-weight:800;color:var(--pu2);width:58px;flex-shrink:0;text-align:right}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--dk);color:#fff;padding:11px 18px;border-radius:11px;font-size:13px;font-weight:700;z-index:999;transition:transform .3s;white-space:nowrap;box-shadow:0 8px 30px rgba(0,0,0,.25)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.mo{position:fixed;inset:0;background:rgba(30,27,75,.55);backdrop-filter:blur(4px);z-index:200;display:none;align-items:flex-end;justify-content:center}
+.mo.open{display:flex}
+.md{background:#fff;border-radius:22px 22px 0 0;padding:22px 18px 30px;width:100%;max-width:480px;max-height:88vh;overflow-y:auto;animation:su .28s cubic-bezier(.4,0,.2,1)}
+@keyframes su{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.mh{width:38px;height:4px;background:#E5E7EB;border-radius:2px;margin:0 auto 18px}
+.md h3{font-size:17px;font-weight:900;color:var(--pu2);margin-bottom:14px}
+.empty{text-align:center;padding:28px 16px}
+.empty .ee{font-size:44px;margin-bottom:10px;display:block}
+.empty p{font-size:13px;color:var(--gy);font-weight:600}
+.ib{display:none;position:fixed;bottom:76px;left:10px;right:10px;background:linear-gradient(135deg,var(--pu2),var(--pu));color:#fff;border-radius:13px;padding:13px 15px;z-index:95;box-shadow:0 8px 32px rgba(91,33,182,.4)}
+.cal-box{background:linear-gradient(135deg,#EDE9FE,#FCE7F3);border:2px solid var(--pu);border-radius:13px;padding:15px;margin-bottom:13px}
+.cal-info{background:#fff;border-radius:9px;padding:11px 13px;font-size:12px;font-weight:700;color:var(--dk);display:grid;gap:3px;margin-bottom:10px}
+.sp{height:76px}
+</style>
+</head>
+<body>
+
+<div class="tb">
+  <div style="font-size:26px">🐙</div>
+  <div><div class="tb-logo">Pulpito Show</div><div class="tb-sub">Panel de Gestión</div></div>
+  <div class="tb-date" id="tbdate"></div>
+</div>
+
+<div class="tabs">
+  <div class="tab act" onclick="goTab(0)"><span class="ti">🏠</span>Inicio</div>
+  <div class="tab" onclick="goTab(1)"><span class="ti">📝</span>Contrato</div>
+  <div class="tab" onclick="goTab(2)"><span class="ti">📋</span>Contratos</div>
+  <div class="tab" onclick="goTab(3)"><span class="ti">💰</span>Finanzas</div>
+</div>
+
+<div class="main">
+
+<!-- INICIO -->
+<div class="page act" id="p0">
+  <div class="sg" style="margin-top:4px">
+    <div class="sc spu"><div class="sl">ESTE MES</div><div class="sv" id="d-mes">S/.0</div><div class="ss2" id="d-mes-n">0 shows</div></div>
+    <div class="sc spk"><div class="sl">POR COBRAR</div><div class="sv" id="d-cob">S/.0</div><div class="ss2">saldo pendiente</div></div>
+    <div class="sc stl"><div class="sl">ESTA SEMANA</div><div class="sv" id="d-sem">S/.0</div><div class="ss2" id="d-sem-n">0 shows</div></div>
+    <div class="sc sye"><div class="sl">TOTAL AÑO</div><div class="sv" id="d-ano">S/.0</div><div class="ss2" id="d-ano-n">0 shows</div></div>
+  </div>
+  <div class="card">
+    <div class="ch"><span style="font-size:20px">📅</span><h2>Próximos Shows</h2></div>
+    <div id="upcoming"></div>
+  </div>
+  <div class="card">
+    <div class="ch"><span style="font-size:20px">⚡</span><h2>Acceso Rápido</h2></div>
+    <div class="br">
+      <button class="btn bp bsm" onclick="goTab(1)">📝 Nuevo Contrato</button>
+      <button class="btn bt bsm" onclick="goTab(3)">💰 Finanzas</button>
+    </div>
+  </div>
+  <div class="sp"></div>
+</div>
+
+<!-- NUEVO CONTRATO -->
+<div class="page" id="p1">
+  <div class="card">
+    <div class="ch"><span style="font-size:20px">👤</span><h2>Datos del Cliente</h2></div>
+    <div class="fg"><label>Nombre completo</label><input type="text" id="f-nom" placeholder="Ej: María López Flores" autocomplete="off"></div>
+    <div class="fr">
+      <div class="fg"><label>DNI</label><input type="number" id="f-dni" placeholder="12345678"></div>
+      <div class="fg"><label>Celular</label><input type="tel" id="f-cel" placeholder="9XXXXXXXX"></div>
+    </div>
+    <div class="fg"><label>Dirección del cliente</label><input type="text" id="f-dir" placeholder="Av. Principal 123, Juliaca"></div>
+  </div>
+
+  <div class="card">
+    <div class="ch"><span style="font-size:20px">🎉</span><h2>Tipo de Show</h2></div>
+    <div class="ss">
+      <div class="so" id="os-fam" onclick="selShow('fam')"><span class="se">🎭</span><div class="sn">SHOW FAMILIAR</div><div class="sd">Juegos + luces + micro</div></div>
+      <div class="so" id="os-com" onclick="selShow('com')"><span class="se">🎆</span><div class="sn">SHOW COMPLETO</div><div class="sd">+ Humo + burbujas</div></div>
+      <div class="so" id="os-esc" onclick="selShow('esc')"><span class="se">🎒</span><div class="sn">INICIO ESCOLAR</div><div class="sd">Juegos + micro</div></div>
+      <div class="so" id="os-otr" onclick="selShow('otr')"><span class="se">✨</span><div class="sn">OTRO</div><div class="sd">Personalizado</div></div>
+    </div>
+    <div class="fg" id="g-otr" style="display:none"><label>Describe el show</label><input type="text" id="f-otr" placeholder="Ej: Show temático..."></div>
+  </div>
+
+  <div class="card">
+    <div class="ch"><span style="font-size:20px">📅</span><h2>Detalles del Evento</h2></div>
+    <div class="fg">
+      <label>Tipo de evento</label>
+      <select id="f-tev">
+        <option value="">Seleccionar...</option>
+        <option>Cumpleaños</option><option>Bautizo</option><option>Matrimonio</option>
+        <option>Bienvenida de Inicio Escolar</option><option>Fin de año escolar</option>
+        <option>Aniversario</option><option>Fiesta institucional</option><option>Otro</option>
+      </select>
+    </div>
+    <div class="fr">
+      <div class="fg"><label>Ciudad</label><input type="text" id="f-ciu" value="Juliaca"></div>
+      <div class="fg"><label>Fecha</label><input type="date" id="f-fec"></div>
+    </div>
+    <div class="fg"><label>Dirección del evento</label><input type="text" id="f-dev" placeholder="Colegio / local / dirección"></div>
+    <div class="fr">
+      <div class="fg"><label>Hora inicio</label><input type="time" id="f-hi"></div>
+      <div class="fg"><label>Hora fin</label><input type="time" id="f-hf"></div>
+    </div>
+    <div class="fg"><label>Google Maps URL (opcional)</label><input type="url" id="f-map" placeholder="https://maps.google.com/..."></div>
+  </div>
+
+  <div class="card">
+    <div class="ch"><span style="font-size:20px">💰</span><h2>Condiciones Económicas</h2></div>
+    <div class="pg">
+      <div class="pb tot"><label>💜 PRECIO TOTAL</label><input type="number" id="f-tot" placeholder="0" oninput="calcS()"></div>
+      <div class="pb ade"><label>💛 ADELANTO</label><input type="number" id="f-ade" placeholder="0" oninput="calcS()"></div>
+      <div class="pb sal"><label>💚 SALDO</label><input type="number" id="f-sal" placeholder="0" readonly></div>
+    </div>
+    <div class="dv"></div>
+    <div class="pill">💳 Método de adelanto</div>
+    <div class="ps">
+      <div class="po" id="op-pl" onclick="selPay('pl')"><span class="pi">💙</span><div class="pn">PLIN</div></div>
+      <div class="po" id="op-ya" onclick="selPay('ya')"><span class="pi">💜</span><div class="pn">YAPE</div></div>
+      <div class="po" id="op-ef" onclick="selPay('ef')"><span class="pi">💵</span><div class="pn">EFECTIVO</div></div>
+    </div>
+    <div id="g-op" style="display:none">
+      <div class="fr">
+        <div class="fg"><label>N° Operación</label><input type="text" id="f-op" placeholder="12345678"></div>
+        <div class="fg"><label>Titular del pago</label><input type="text" id="f-tit" placeholder="Nombre en la app"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ch"><span style="font-size:20px">📄</span><h2>Tipo de Contrato</h2></div>
+    <div class="ss">
+      <div class="so" id="oc-vir" onclick="selCont('vir')"><span class="se">📱</span><div class="sn">VIRTUAL</div><div class="sd">Enviar por WhatsApp</div></div>
+      <div class="so" id="oc-fis" onclick="selCont('fis')"><span class="se">🖨️</span><div class="sn">IMPRIMIR</div><div class="sd">Firmas en persona</div></div>
+    </div>
+  </div>
+
+  <button class="btn bt" onclick="verPrevia()" style="margin-bottom:10px">👁️ Vista Previa del Contrato</button>
+  <button class="btn bp" onclick="guardar()" style="margin-bottom:10px">💾 Guardar Contrato</button>
+  <button class="btn bs" onclick="limpiar()">🗑️ Limpiar formulario</button>
+  <div class="sp"></div>
+</div>
+
+<!-- CONTRATOS -->
+<div class="page" id="p2">
+  <div style="display:flex;align-items:center;gap:9px;margin-bottom:13px;margin-top:4px">
+    <input type="text" placeholder="🔍 Buscar cliente..." id="src" oninput="renderList()" style="flex:1;margin-bottom:0">
+    <select id="flt" onchange="renderList()" style="width:110px;margin-bottom:0;flex-shrink:0">
+      <option value="">Todos</option>
+      <option value="pend">Pendiente</option>
+      <option value="done">Completado</option>
+    </select>
+  </div>
+  <div id="clist"></div>
+  <div class="sp"></div>
+</div>
+
+<!-- FINANZAS -->
+<div class="page" id="p3">
+  <div class="pt" style="margin-top:4px">
+    <div class="ptt act" onclick="selPer('sem',this)">Semana</div>
+    <div class="ptt" onclick="selPer('mes',this)">Mes</div>
+    <div class="ptt" onclick="selPer('ano',this)">Año</div>
+  </div>
+  <div class="tbn">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between">
+      <div>
+        <div style="font-size:11px;font-weight:700;opacity:.8;text-transform:uppercase;letter-spacing:.5px">INGRESOS TOTALES</div>
+        <div style="font-size:34px;font-weight:900;line-height:1.1;margin-top:3px" id="fv">S/. 0.00</div>
+        <div style="font-size:12px;opacity:.8;margin-top:5px;font-weight:600" id="fp">Esta semana</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:22px;font-weight:900" id="fc">0</div>
+        <div style="font-size:11px;opacity:.75;font-weight:600">shows</div>
+      </div>
+    </div>
+  </div>
+  <div class="sg">
+    <div class="sc spu"><div class="sl">COBRADO</div><div class="sv" id="fco">S/.0</div><div class="ss2">adelantos</div></div>
+    <div class="sc spk"><div class="sl">POR COBRAR</div><div class="sv" id="fpe">S/.0</div><div class="ss2">saldos</div></div>
+  </div>
+  <div class="card">
+    <div class="ch"><span style="font-size:20px">📊</span><h2 id="fct">Por día</h2></div>
+    <div id="fchart"></div>
+  </div>
+  <div class="card">
+    <div class="ch"><span style="font-size:20px">🎪</span><h2>Shows del período</h2></div>
+    <div id="fshows"></div>
+  </div>
+  <div class="sp"></div>
+</div>
+
+</div><!-- /main -->
+
+<!-- TOAST -->
+<div class="toast" id="toast">✅ Listo</div>
+
+<!-- MODAL DETALLE -->
+<div class="mo" id="m-det">
+  <div class="md">
+    <div class="mh"></div>
+    <h3 id="m-nom">Detalle</h3>
+    <div id="m-body"></div>
+  </div>
+</div>
+
+<!-- MODAL ÉXITO -->
+<div class="mo" id="m-ok">
+  <div class="md">
+    <div class="mh"></div>
+    <div id="m-ok-body"></div>
+  </div>
+</div>
+
+<!-- MODAL EDITAR -->
+<div class="mo" id="m-edit">
+  <div class="md">
+    <div class="mh"></div>
+    <h3>✏️ Editar Contrato</h3>
+    <div id="m-edit-body"></div>
+    <div class="br" style="margin-top:14px">
+      <button class="btn bs bsm" onclick="closeM('m-edit')">✕ Cancelar</button>
+      <button class="btn bp bsm" onclick="saveEdit()">💾 Guardar cambios</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL VISTA PREVIA -->
+<div class="mo" id="m-prev">
+  <div class="md" style="padding:0;border-radius:22px 22px 0 0">
+    <div style="padding:14px 18px 0">
+      <div class="mh"></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <h3 style="margin:0">👁️ Vista Previa</h3>
+        <button class="btn bs bsm" onclick="closeM('m-prev')" style="width:auto">✕</button>
+      </div>
+    </div>
+    <div id="m-prev-body" style="padding:0 16px 16px;overflow-y:auto;max-height:65vh"></div>
+    <div style="padding:10px 16px 26px;display:flex;gap:9px;border-top:1px solid var(--pul)">
+      <button class="btn bs" onclick="closeM('m-prev')" style="flex:1">✕ Cerrar</button>
+      <button class="btn bp" onclick="imprimir()" style="flex:2">🖨️ Imprimir / PDF</button>
+    </div>
+  </div>
+</div>
+
+<!-- PWA INSTALL BANNER -->
+<div class="ib" id="ib">
+  <div style="display:flex;align-items:center;gap:11px">
+    <span style="font-size:26px">🐙</span>
+    <div style="flex:1">
+      <div style="font-size:14px;font-weight:900">Instalar como app</div>
+      <div style="font-size:11px;opacity:.85;margin-top:1px">Accede rápido desde tu pantalla de inicio</div>
+    </div>
+    <div style="display:flex;gap:7px">
+      <button onclick="doPWA()" style="background:#fff;color:var(--pu2);border:none;padding:7px 13px;border-radius:8px;font-weight:900;font-size:13px;cursor:pointer;font-family:Nunito,sans-serif">Instalar</button>
+      <button onclick="document.getElementById('ib').style.display='none'" style="background:rgba(255,255,255,.2);color:#fff;border:none;padding:7px 9px;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer">✕</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════
+// DATA
+// ════════════════════════════════════
+var DB = JSON.parse(localStorage.getItem('ps_db') || '[]');
+var cShow = '', cPay = '', cCont = '', curPer = 'sem', curId = 0, prevC = null;
+
+function save() { localStorage.setItem('ps_db', JSON.stringify(DB)); }
+
+var SHOW_N = {fam:'Show Familiar', com:'Show Completo', esc:'Inicio Escolar', otr:'Show Especial'};
+var PAY_N  = {pl:'Plin', ya:'Yape', ef:'Efectivo'};
+var MES    = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+var MESA   = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+var DIAS   = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+var SINFO  = {
+  'Show Familiar':  {desc:'Animación con juegos, dinámicas y participación del público', ext:'🎤 Micro inalámbrico · 🌟 Cámara de luces'},
+  'Show Completo':  {desc:'Animación con juegos, dinámicas y participación del público', ext:'🎤 Micro · 🌟 Luces · 💨 Humo · 🫧 Burbujas gigantes'},
+  'Inicio Escolar': {desc:'Animación con juegos, dinámicas y participación del público', ext:'🎤 Parlante con micrófono inalámbrico'},
+  'Show Especial':  {desc:'Animación personalizada', ext:'🎤 Parlante con micrófono inalámbrico'}
+};
+
+// ════════════════════════════════════
+// DATE HEADER
+// ════════════════════════════════════
+(function() {
+  var d = new Date();
+  var da = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+  document.getElementById('tbdate').textContent = da[d.getDay()] + ' ' + d.getDate() + ' ' + MESA[d.getMonth()];
+})();
+
+// ════════════════════════════════════
+// TABS
+// ════════════════════════════════════
+function goTab(i) {
+  var tabs = document.querySelectorAll('.tab');
+  var pages = document.querySelectorAll('.page');
+  for (var t = 0; t < tabs.length; t++) tabs[t].className = 'tab' + (t === i ? ' act' : '');
+  for (var p = 0; p < pages.length; p++) pages[p].className = 'page' + (p === i ? ' act' : '');
+  window.scrollTo(0, 0);
+  if (i === 0) renderDash();
+  if (i === 2) renderList();
+  if (i === 3) renderFin();
+}
+
+// ════════════════════════════════════
+// FORM HELPERS
+// ════════════════════════════════════
+function selShow(t) {
+  var keys = ['fam','com','esc','otr'];
+  for (var i = 0; i < keys.length; i++) document.getElementById('os-' + keys[i]).classList.remove('sel');
+  document.getElementById('os-' + t).classList.add('sel');
+  cShow = t;
+  document.getElementById('g-otr').style.display = t === 'otr' ? 'block' : 'none';
+}
+
+function selPay(t) {
+  var cls = {pl:'spl', ya:'sya', ef:'sef'};
+  var keys = ['pl','ya','ef'];
+  for (var i = 0; i < keys.length; i++) document.getElementById('op-' + keys[i]).className = 'po';
+  document.getElementById('op-' + t).classList.add(cls[t]);
+  cPay = t;
+  document.getElementById('g-op').style.display = (t === 'pl' || t === 'ya') ? 'block' : 'none';
+}
+
+function selCont(t) {
+  document.getElementById('oc-vir').classList.remove('sel');
+  document.getElementById('oc-fis').classList.remove('sel');
+  document.getElementById('oc-' + t).classList.add('sel');
+  cCont = t;
+}
+
+function calcS() {
+  var tot = parseFloat(document.getElementById('f-tot').value) || 0;
+  var ade = parseFloat(document.getElementById('f-ade').value) || 0;
+  document.getElementById('f-sal').value = Math.max(0, tot - ade).toFixed(0);
+}
+
+function limpiar() {
+  var ids = ['f-nom','f-dni','f-cel','f-dir','f-tev','f-dev','f-fec','f-hi','f-hf','f-tot','f-ade','f-sal','f-op','f-tit','f-map','f-otr'];
+  for (var i = 0; i < ids.length; i++) {
+    var el = document.getElementById(ids[i]);
+    if (el) el.value = '';
+  }
+  document.getElementById('f-ciu').value = 'Juliaca';
+  var so = ['fam','com','esc','otr'];
+  for (var s = 0; s < so.length; s++) document.getElementById('os-' + so[s]).classList.remove('sel');
+  document.getElementById('oc-vir').classList.remove('sel');
+  document.getElementById('oc-fis').classList.remove('sel');
+  var po = ['pl','ya','ef'];
+  for (var p = 0; p < po.length; p++) document.getElementById('op-' + po[p]).className = 'po';
+  document.getElementById('g-otr').style.display = 'none';
+  document.getElementById('g-op').style.display = 'none';
+  cShow = ''; cPay = ''; cCont = '';
+}
+
+// ════════════════════════════════════
+// MODALS
+// ════════════════════════════════════
+function openM(id) { document.getElementById(id).classList.add('open'); }
+function closeM(id) { document.getElementById(id).classList.remove('open'); }
+
+var moList = document.querySelectorAll('.mo');
+for (var mi = 0; mi < moList.length; mi++) {
+  moList[mi].addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('open');
+  });
+}
+
+// ════════════════════════════════════
+// TOAST
+// ════════════════════════════════════
+function toast(msg, dur) {
+  var t = document.getElementById('toast');
+  t.innerHTML = msg;
+  t.classList.add('show');
+  setTimeout(function() { t.classList.remove('show'); }, dur || 2800);
+}
+
+// ════════════════════════════════════
+// BUILD FROM FORM
+// ════════════════════════════════════
+function fromForm() {
+  return {
+    id:   Date.now(),
+    nom:  document.getElementById('f-nom').value.trim(),
+    dni:  document.getElementById('f-dni').value,
+    cel:  document.getElementById('f-cel').value,
+    dir:  document.getElementById('f-dir').value,
+    show: SHOW_N[cShow] || 'Show Especial',
+    tev:  document.getElementById('f-tev').value || 'Evento',
+    ciu:  document.getElementById('f-ciu').value || 'Juliaca',
+    dev:  document.getElementById('f-dev').value,
+    fec:  document.getElementById('f-fec').value,
+    hi:   document.getElementById('f-hi').value,
+    hf:   document.getElementById('f-hf').value,
+    tot:  parseFloat(document.getElementById('f-tot').value) || 0,
+    ade:  parseFloat(document.getElementById('f-ade').value) || 0,
+    sal:  parseFloat(document.getElementById('f-sal').value) || 0,
+    pay:  PAY_N[cPay] || 'Efectivo',
+    op:   document.getElementById('f-op').value,
+    tit:  document.getElementById('f-tit').value,
+    cont: cCont || 'vir',
+    map:  document.getElementById('f-map').value,
+    est:  'pend',
+    cre:  new Date().toISOString()
+  };
+}
+
+// ════════════════════════════════════
+// SAVE
+// ════════════════════════════════════
+function guardar() {
+  var c = fromForm();
+  if (!c.nom) { toast('⚠️ Ingresa el nombre del cliente'); return; }
+  if (!c.fec) { toast('⚠️ Selecciona la fecha'); return; }
+  if (!c.hi)  { toast('⚠️ Ingresa la hora de inicio'); return; }
+  if (!c.tot) { toast('⚠️ Ingresa el precio total'); return; }
+  if (!cShow) { toast('⚠️ Selecciona el tipo de show'); return; }
+  if (!cCont) { toast('⚠️ Selecciona el tipo de contrato'); return; }
+  DB.unshift(c);
+  save();
+  limpiar();
+  showOk(c);
+}
+
+// ════════════════════════════════════
+// GOOGLE CALENDAR URL
+// ════════════════════════════════════
+function gcURL(c) {
+  var hi = (c.hi || '09:00').replace(':', '');
+  var hf = (c.hf || c.hi || '10:00').replace(':', '');
+  var base = c.fec.replace(/-/g, '');
+  var ds = base + 'T' + hi + '00';
+  var de = base + 'T' + hf + '00';
+  var title = c.hi + ' 🎉 PULPITO SHOW — ' + c.show + ' | ' + c.nom;
+  var desc  = '📋 ' + c.tev + '\n👤 ' + c.nom + (c.cel ? ' · 📱 ' + c.cel : '') + '\n📍 ' + c.dev + ', ' + c.ciu + '\n💰 Total: S/.' + c.tot + ' | Adelanto: S/.' + c.ade + ' | Saldo: S/.' + c.sal + (c.op ? '\n' + c.pay + ' Op: ' + c.op : '') + (c.map ? '\n🗺️ ' + c.map : '');
+  var loc   = c.dev + ', ' + c.ciu + (c.map ? ' — ' + c.map : '');
+  return 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent(title) + '&dates=' + ds + '/' + de + '&details=' + encodeURIComponent(desc) + '&location=' + encodeURIComponent(loc);
+}
+
+function fmtF(fec) {
+  var d = new Date(fec + 'T12:00:00');
+  return d.getDate() + ' de ' + MES[d.getMonth()] + ' de ' + d.getFullYear();
+}
+
+// ════════════════════════════════════
+// SUCCESS MODAL
+// ════════════════════════════════════
+function showOk(c) {
+  var url = gcURL(c);
+  var fd = fmtF(c.fec);
+  var h = '';
+  h += '<div style="text-align:center;margin-bottom:16px">';
+  h += '<div style="font-size:50px;margin-bottom:7px">🎉</div>';
+  h += '<div style="font-size:16px;font-weight:900;color:var(--pu2)">¡Contrato guardado!</div>';
+  h += '<div style="font-size:13px;color:var(--gy);margin-top:3px">' + c.nom + ' · ' + fd + '</div>';
+  h += '</div>';
+  h += '<div class="cal-box">';
+  h += '<div style="font-size:14px;font-weight:900;color:var(--pu2);margin-bottom:5px;display:flex;align-items:center;gap:7px">📅 Agendar en Google Calendar</div>';
+  h += '<div style="font-size:12px;color:var(--gy);font-weight:600;margin-bottom:11px">¡No olvides agendar el show! Es clave para tener todo organizado.</div>';
+  h += '<div class="cal-info">';
+  h += '<div>🕐 <strong>' + c.hi + (c.hf ? ' — ' + c.hf : '') + '</strong> · ' + fd + '</div>';
+  h += '<div>📍 ' + c.dev + ', ' + c.ciu + '</div>';
+  h += '<div>💰 S/.' + c.tot + ' · Saldo: <strong>S/.' + c.sal + '</strong></div>';
+  h += '</div>';
+  h += '<a href="' + url + '" target="_blank" class="btn bcal" style="margin-bottom:8px">📅 Abrir Google Calendar</a>';
+  h += '</div>';
+  h += '<div class="br">';
+  h += '<button class="btn bs" onclick="closeM(\'m-ok\');verPreviaId(' + c.id + ')">👁️ Ver contrato</button>';
+  h += '<button class="btn bt" onclick="closeM(\'m-ok\');goTab(2)">📋 Ver lista</button>';
+  h += '</div>';
+  document.getElementById('m-ok-body').innerHTML = h;
+  openM('m-ok');
+}
+
+// ════════════════════════════════════
+// CONTRACT HTML BUILDER
+// ════════════════════════════════════
+function buildHtml(c) {
+  var d   = new Date(c.fec + 'T12:00:00');
+  var hoy = new Date();
+  var fl  = DIAS[d.getDay()] + ' ' + d.getDate() + ' de ' + MES[d.getMonth()] + ' del ' + d.getFullYear();
+  var fe  = hoy.getDate() + ' de ' + MES[hoy.getMonth()] + ' del ' + hoy.getFullYear();
+  var inf = SINFO[c.show] || SINFO['Show Especial'];
+  var es  = c.cont === 'vir';
+  var pc  = c.pay === 'Yape' ? '#7C3AED' : '#2563EB';
+  var pm  = c.pay === 'Yape' ? '💜' : '💙';
+
+  var h = '';
+  h += '<div style="max-width:700px;margin:0 auto;font-family:Nunito,sans-serif;font-size:12.5px;color:#1E1B4B;background:#fff;padding:14px">';
+
+  // Header
+  h += '<div style="background:linear-gradient(135deg,#5B21B6,#7C3AED,#EC4899);border-radius:13px;padding:13px 16px;margin-bottom:9px;display:flex;align-items:center;gap:13px">';
+  h += '<div style="font-size:42px;line-height:1">🐙</div>';
+  h += '<div style="flex:1">';
+  h += '<div style="font-size:17px;font-weight:900;color:#fff">CONTRATO ' + (es ? 'VIRTUAL ' : '') + 'DE SERVICIOS ARTÍSTICOS</div>';
+  h += '<div style="font-size:11px;color:rgba(255,255,255,.85);margin-top:2px;font-weight:700">🎪 Animación &amp; Entretenimiento Profesional</div>';
+  h += '<div style="font-size:11.5px;color:#fff;margin-top:2px;font-weight:800">Jesús Manuel Yanqui Estofanero · DNI: 48026986 · 📱 994280609</div>';
+  h += '<div style="font-size:10.5px;color:rgba(255,255,255,.8);margin-top:1px">📍 Av. Huancané 1967, Juliaca, Puno</div>';
+  h += '</div></div>';
+
+  if (es) {
+    h += '<div style="background:#EFF6FF;border:1.5px solid #BFDBFE;border-radius:8px;padding:7px 13px;text-align:center;margin-bottom:8px;font-size:12px;font-weight:700;color:#1D4ED8">';
+    h += '💙 Contrato de validez virtual — Aceptación confirmada con adelanto vía ' + c.pay + ' al 994280609</div>';
+  }
+
+  // Two-column: datos + evento
+  h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">';
+  h += '<div>';
+  h += '<div style="background:#EDE9FE;border-radius:8px;padding:5px 11px;margin-bottom:5px"><span style="font-size:11.5px;font-weight:900;color:#5B21B6">👤 DATOS DEL CONTRATANTE</span></div>';
+  h += '<div style="background:#fff;border:1.5px solid #EDE9FE;border-radius:8px;padding:9px 11px;font-size:12px">';
+  h += '<div style="margin-bottom:3px"><span style="color:#7C3AED;font-weight:800">Nombre: </span><strong>' + c.nom + '</strong></div>';
+  h += '<div style="margin-bottom:3px"><span style="color:#7C3AED;font-weight:800">DNI: </span><strong>' + (c.dni || '_______________') + '</strong></div>';
+  h += '<div style="margin-bottom:3px"><span style="color:#7C3AED;font-weight:800">Teléfono: </span><strong>' + (c.cel || '') + '</strong></div>';
+  h += '<div><span style="color:#7C3AED;font-weight:800">Dirección: </span><strong>' + (c.dir || '') + '</strong></div>';
+  h += '</div></div>';
+  h += '<div>';
+  h += '<div style="background:#FCE7F3;border-radius:8px;padding:5px 11px;margin-bottom:5px"><span style="font-size:11.5px;font-weight:900;color:#9D174D">📅 DETALLES DEL EVENTO</span></div>';
+  h += '<div style="background:#fff;border:1.5px solid #FCE7F3;border-radius:8px;padding:9px 11px;font-size:12px">';
+  h += '<div style="margin-bottom:3px"><span style="color:#DB2777;font-weight:800">Evento: </span><strong>' + (c.tev || '') + '</strong></div>';
+  h += '<div style="margin-bottom:3px"><span style="color:#DB2777;font-weight:800">Fecha: </span><strong>' + fl + '</strong></div>';
+  h += '<div style="margin-bottom:3px;display:grid;grid-template-columns:1fr 1fr;gap:4px">';
+  h += '<div><span style="color:#DB2777;font-weight:800">Inicio: </span><strong>' + (c.hi || '') + '</strong></div>';
+  h += '<div><span style="color:#DB2777;font-weight:800">Fin: </span><strong>' + (c.hf || '') + '</strong></div></div>';
+  h += '<div style="margin-bottom:3px"><span style="color:#DB2777;font-weight:800">Ciudad: </span><strong>' + (c.ciu || '') + '</strong></div>';
+  h += '<div><span style="color:#DB2777;font-weight:800">Dirección: </span><strong>' + (c.dev || '') + '</strong></div>';
+  h += '</div></div></div>';
+
+  // Show type
+  h += '<div style="background:#EDE9FE;border:2px solid #7C3AED;border-radius:9px;padding:9px 13px;text-align:center;margin-bottom:8px">';
+  h += '<div style="font-size:14px;font-weight:900;color:#5B21B6">🎊 ' + (c.tev || '').toUpperCase() + ' — ' + (c.show || '').toUpperCase() + ' 🎊</div>';
+  h += '<div style="font-size:11.5px;color:#374151;font-weight:600;margin-top:3px">' + inf.desc + '</div>';
+  h += '<div style="font-size:11px;color:#6B7280;margin-top:2px">' + inf.ext + '</div>';
+  h += '</div>';
+
+  // Prices
+  h += '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:4px">';
+  h += '<div style="background:#EDE9FE;border:1.5px solid #7C3AED;border-radius:8px;padding:9px 6px;text-align:center">';
+  h += '<div style="font-size:10px;font-weight:800;color:#7C3AED;margin-bottom:3px">💜 PRECIO TOTAL</div>';
+  h += '<div style="font-size:19px;font-weight:900;color:#5B21B6">S/. ' + (c.tot || 0).toFixed(2) + '</div></div>';
+  h += '<div style="background:#FEF3C7;border:1.5px solid #F59E0B;border-radius:8px;padding:9px 6px;text-align:center">';
+  h += '<div style="font-size:10px;font-weight:800;color:#D97706;margin-bottom:3px">💛 ADELANTO ' + (c.pay || '').toUpperCase() + '</div>';
+  h += '<div style="font-size:19px;font-weight:900;color:#92400E">S/. ' + (c.ade || 0).toFixed(2) + '</div></div>';
+  h += '<div style="background:#CCFBF1;border:1.5px solid #0D9488;border-radius:8px;padding:9px 6px;text-align:center">';
+  h += '<div style="font-size:10px;font-weight:800;color:#0D9488;margin-bottom:3px">💚 SALDO A PAGAR</div>';
+  h += '<div style="font-size:19px;font-weight:900;color:#0F766E">S/. ' + (c.sal || 0).toFixed(2) + '</div></div>';
+  h += '</div>';
+  h += '<div style="font-size:10.5px;color:#6B7280;margin-bottom:8px;padding:0 3px">* El saldo (S/. ' + (c.sal || 0).toFixed(2) + ') se cancela al finalizar el evento, antes de retirarse el artista.</div>';
+
+  // Terms
+  h += '<div style="background:#EDE9FE;border-radius:8px;padding:5px 11px;margin-bottom:5px"><span style="font-size:11.5px;font-weight:900;color:#5B21B6">📋 TÉRMINOS Y CONDICIONES</span></div>';
+  h += '<div style="background:#fff;border:1.5px solid #EDE9FE;border-radius:8px;padding:9px 11px;margin-bottom:8px;font-size:12px;display:grid;gap:3px">';
+  h += '<div style="font-weight:600">1. El cliente debe asegurar condiciones adecuadas de seguridad y espacio para el espectáculo.</div>';
+  h += '<div style="font-weight:600">2. En caso de cancelación del evento por parte del cliente, el adelanto no será reembolsable.</div>';
+  h += '<div style="font-weight:600">3. En caso de reprogramación, se podrá cambiar la fecha según disponibilidad.</div>';
+  h += '</div>';
+
+  // Date issued
+  h += '<div style="font-size:12px;font-weight:700;color:#374151;margin-bottom:10px">';
+  h += 'Emitido en Juliaca, el día <strong>' + hoy.getDate() + '</strong> de <strong>' + MES[hoy.getMonth()] + '</strong> del <strong>' + hoy.getFullYear() + '.</strong></div>';
+
+  // Signatures
+  if (es && c.op) {
+    h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">';
+    h += '<div style="background:#F0FDF4;border:2px solid #22C55E;border-radius:12px;padding:13px">';
+    h += '<div style="font-size:12px;font-weight:900;color:#16A34A;text-align:center;margin-bottom:5px">✅ ADELANTO CONFIRMADO</div>';
+    h += '<div style="font-size:11.5px;font-weight:800;color:' + pc + ';text-align:center;margin-bottom:7px">' + pm + ' ' + (c.pay || '').toUpperCase() + ' · 994280609</div>';
+    h += '<div style="font-size:12px;font-weight:700;color:#374151;display:grid;gap:3px">';
+    h += '<div><span style="color:#16A34A">N° Operación: </span><strong>' + (c.op || '') + '</strong></div>';
+    h += '<div><span style="color:#16A34A">Titular: </span>' + (c.tit || c.nom) + '</div>';
+    h += '<div><span style="color:#16A34A">Monto: </span><strong>S/. ' + (c.ade || 0).toFixed(2) + '</strong></div>';
+    h += '</div></div>';
+    h += '<div style="background:#FCE7F3;border:2px solid #EC4899;border-radius:12px;padding:13px;text-align:center;min-height:150px;display:flex;flex-direction:column;justify-content:flex-end">';
+    h += '<div style="border-top:2px solid #EC4899;padding-top:8px">';
+    h += '<div style="font-size:12.5px;font-weight:900;color:#EC4899">✍ Firma del Contratado</div>';
+    h += '<div style="font-size:13px;font-weight:800;color:#1E1B4B;margin-top:4px">Jesús Manuel Yanqui Estofanero</div>';
+    h += '<div style="font-size:11px;color:#6B7280;margin-top:2px">PULPITO SHOW | DNI: 48026986</div>';
+    h += '</div></div></div>';
+  } else {
+    h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:11px">';
+    h += '<div style="background:#EDE9FE;border:2px solid #7C3AED;border-radius:12px;padding:15px;text-align:center;min-height:165px;display:flex;flex-direction:column;justify-content:flex-end">';
+    h += '<div style="border-top:2px solid #7C3AED;padding-top:10px;margin-top:auto">';
+    h += '<div style="font-size:13px;font-weight:900;color:#7C3AED">✍ Firma del Contratante</div>';
+    h += '<div style="font-size:12.5px;font-weight:800;color:#1E1B4B;margin-top:5px">' + c.nom + '</div>';
+    h += '<div style="font-size:12px;color:#6B7280;margin-top:3px">DNI: ' + (c.dni || '_________________') + '</div>';
+    h += '</div></div>';
+    h += '<div style="background:#FCE7F3;border:2px solid #EC4899;border-radius:12px;padding:15px;text-align:center;min-height:165px;display:flex;flex-direction:column;justify-content:flex-end">';
+    h += '<div style="border-top:2px solid #EC4899;padding-top:10px;margin-top:auto">';
+    h += '<div style="font-size:13px;font-weight:900;color:#EC4899">✍ Firma del Contratado</div>';
+    h += '<div style="font-size:13px;font-weight:800;color:#1E1B4B;margin-top:5px">Jesús Manuel Yanqui Estofanero</div>';
+    h += '<div style="font-size:11px;color:#6B7280;margin-top:3px">PULPITO SHOW | DNI: 48026986</div>';
+    h += '</div></div></div>';
+  }
+
+  // Footer
+  h += '<div style="text-align:center;margin-top:11px;padding-top:9px;border-top:1px solid #EDE9FE;font-size:10.5px;color:#6B7280;font-weight:600">';
+  h += '🐙 PULPITO SHOW · Jesús Manuel Yanqui Estofanero · DNI: 48026986 · 📱 994280609 · Juliaca, Puno</div>';
+  h += '</div>';
+  return h;
+}
+
+// ════════════════════════════════════
+// PREVIEW
+// ════════════════════════════════════
+function verPrevia() {
+  var c = fromForm();
+  if (!c.nom) { toast('⚠️ Ingresa el nombre del cliente primero'); return; }
+  prevC = c;
+  document.getElementById('m-prev-body').innerHTML = buildHtml(c);
+  openM('m-prev');
+}
+
+function verPreviaId(id) {
+  var c = DB.find(function(x) { return x.id === id; });
+  if (!c) return;
+  prevC = c;
+  document.getElementById('m-prev-body').innerHTML = buildHtml(c);
+  openM('m-prev');
+}
+
+function imprimir() {
+  if (!prevC) return;
+  var c = prevC;
+  var w = window.open('', '_blank');
+  var body = buildHtml(c);
+  w.document.write('<!DOCTYPE html><html><head>'
+    + '<meta charset="UTF-8"><meta name="viewport" content="width=device-width">'
+    + '<title>Contrato - ' + c.nom + '</title>'
+    + '<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">'
+    + '<style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:Nunito,sans-serif;background:#fff;color:#1E1B4B}'
+    + '@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}.np{display:none!important}@page{margin:7mm;size:A4 portrait}}'
+    + '</style></head><body>' + body
+    + '<div class="np" style="text-align:center;padding:18px">'
+    + '<button onclick="window.print()" style="background:linear-gradient(135deg,#7C3AED,#EC4899);color:#fff;border:none;padding:13px 28px;border-radius:11px;font-size:15px;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif">🖨️ Imprimir / Guardar PDF</button>'
+    + '</div></body></html>');
+  w.document.close();
+}
+
+// ════════════════════════════════════
+// CONTRACT LIST
+// ════════════════════════════════════
+var SEMO = {'Show Familiar':'🎭','Show Completo':'🎆','Inicio Escolar':'🎒','Show Especial':'✨'};
+
+function renderList() {
+  var q   = (document.getElementById('src').value || '').toLowerCase();
+  var fil = document.getElementById('flt').value;
+  var items = DB.filter(function(c) {
+    var mq = !q || (c.nom || '').toLowerCase().indexOf(q) >= 0 || (c.tev || '').toLowerCase().indexOf(q) >= 0;
+    var mf = !fil || c.est === fil;
+    return mq && mf;
+  });
+  var el = document.getElementById('clist');
+  if (!items.length) {
+    el.innerHTML = '<div class="empty"><span class="ee">📋</span><p>' + (q ? 'Sin resultados para "' + q + '"' : 'Aún no hay contratos.<br>¡Crea el primero!') + '</p></div>';
+    return;
+  }
+  var html = '';
+  for (var i = 0; i < items.length; i++) {
+    var c = items[i];
+    var d = new Date(c.fec + 'T12:00:00');
+    var fd = d.getDate() + ' ' + MESA[d.getMonth()] + ' ' + d.getFullYear();
+    var em = SEMO[c.show] || '🎪';
+    var ec = c.est === 'done' ? 'done' : 'pend';
+    var eb = c.est === 'done' ? '<span class="bdg bgn">✅ Listo</span>' : '<span class="bdg bye">⏳ Pendiente</span>';
+    var sl = (c.sal > 0 && c.est !== 'done') ? '<span style="display:block;font-size:10px;font-weight:700;color:var(--ye)">⚠️ S/.' + c.sal + ' pendiente</span>' : '';
+    html += '<div class="ci ' + ec + '" onclick="openDet(' + c.id + ')">'
+         + '<div class="cav">' + em + '</div>'
+         + '<div class="cn"><div class="cnm">' + c.nom + '</div>'
+         + '<div class="cmt">📅 ' + fd + ' · ' + c.hi + ' · ' + c.ciu + '</div>'
+         + '<div style="margin-top:3px">' + eb + ' <span class="bdg bpu">' + c.show + '</span></div></div>'
+         + '<div style="font-weight:900;color:var(--pu);flex-shrink:0;text-align:right;font-size:14px">S/.' + c.tot + sl + '</div>'
+         + '</div>';
+  }
+  el.innerHTML = html;
+}
+
+// ════════════════════════════════════
+// DETAIL MODAL
+// ════════════════════════════════════
+function openDet(id) {
+  var c = DB.find(function(x) { return x.id === id; });
+  if (!c) return;
+  curId = id;
+  var fd = fmtF(c.fec);
+  var url = gcURL(c);
+  var h = '';
+  h += '<div class="sg" style="margin-bottom:11px">';
+  h += '<div class="sc spu"><div class="sl">TOTAL</div><div class="sv" style="font-size:19px">S/.' + c.tot + '</div></div>';
+  h += '<div class="sc ' + (c.est === 'done' ? 'stl' : 'sye') + '"><div class="sl">SALDO</div><div class="sv" style="font-size:19px">' + (c.est === 'done' ? '✅' : 'S/.' + c.sal) + '</div></div>';
+  h += '</div>';
+  // BIG CALENDAR BUTTON
+  h += '<a href="' + url + '" target="_blank" class="btn bcal" style="margin-bottom:11px;text-decoration:none">📅 Agendar en Google Calendar</a>';
+  h += '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:9px">';
+  h += '<span class="bdg bpu">🎭 ' + c.show + '</span>';
+  h += '<span class="bdg bpk">🎪 ' + (c.tev || '') + '</span>';
+  h += '<span class="bdg ' + (c.est === 'done' ? 'bgn' : 'bye') + '">' + (c.est === 'done' ? '✅ Completado' : '⏳ Pendiente') + '</span>';
+  h += '</div>';
+  h += '<div style="font-size:13px;color:var(--gy);font-weight:600;display:grid;gap:5px">';
+  h += '<span>📅 <strong>' + fd + '</strong> · ' + c.hi + (c.hf ? ' — ' + c.hf : '') + '</span>';
+  if (c.cel) h += '<span>📱 ' + c.cel + '</span>';
+  if (c.dev) h += '<span>📍 ' + c.dev + ', ' + c.ciu + '</span>';
+  if (c.pay && c.pay !== 'Efectivo') h += '<span>💳 ' + c.pay + (c.op ? ' · Op: ' + c.op : '') + '</span>';
+  if (c.map) h += '<span>🗺️ <a href="' + c.map + '" target="_blank" style="color:var(--pu)">Ver en Google Maps</a></span>';
+  h += '</div>';
+  h += '<div class="dv"></div>';
+  h += '<div class="br">';
+  h += '<button class="btn bt bsm" onclick="closeM(\'m-det\');verPreviaId(' + id + ')">👁️ Ver contrato</button>';
+  h += '<button class="btn bs bsm" onclick="closeM(\'m-det\');openEdit(' + id + ')">✏️ Editar</button>';
+  h += '</div>';
+  h += '<div class="br" style="margin-top:8px">';
+  if (c.est !== 'done') h += '<button class="btn bgg bsm" onclick="markDone(' + id + ')">✅ Marcar pagado</button>';
+  if (c.cel) h += '<a href="https://wa.me/51' + c.cel + '?text=Hola%20' + encodeURIComponent(c.nom) + '%2C%20te%20envío%20el%20contrato%20del%20evento%20🎉" target="_blank" class="btn bgg bsm" style="text-decoration:none">💬 WhatsApp</a>';
+  h += '<button class="btn bs bsm" onclick="delC(' + id + ')">🗑️</button>';
+  h += '</div>';
+  document.getElementById('m-nom').textContent = c.nom;
+  document.getElementById('m-body').innerHTML = h;
+  openM('m-det');
+}
+
+function markDone(id) {
+  var c = DB.find(function(x) { return x.id === id; });
+  if (c) { c.est = 'done'; c.sal = 0; save(); closeM('m-det'); renderList(); renderDash(); toast('✅ Show completado y cobrado'); }
+}
+
+function delC(id) {
+  if (!confirm('¿Eliminar este contrato?')) return;
+  DB = DB.filter(function(x) { return x.id !== id; });
+  save(); closeM('m-det'); renderList(); renderDash(); toast('🗑️ Eliminado');
+}
+
+// ════════════════════════════════════
+// EDIT MODAL
+// ════════════════════════════════════
+function openEdit(id) {
+  var c = DB.find(function(x) { return x.id === id; });
+  if (!c) return;
+  curId = id;
+  var showArr = ['Show Familiar','Show Completo','Inicio Escolar','Show Especial'];
+  var tevArr  = ['Cumpleaños','Bautizo','Matrimonio','Bienvenida de Inicio Escolar','Fin de año escolar','Aniversario','Fiesta institucional','Otro'];
+  var payArr  = ['Plin','Yape','Efectivo'];
+  var sOpts = ''; for (var s = 0; s < showArr.length; s++) sOpts += '<option' + (c.show === showArr[s] ? ' selected' : '') + '>' + showArr[s] + '</option>';
+  var tOpts = ''; for (var t = 0; t < tevArr.length; t++) tOpts += '<option' + (c.tev === tevArr[t] ? ' selected' : '') + '>' + tevArr[t] + '</option>';
+  var pOpts = ''; for (var p = 0; p < payArr.length; p++) pOpts += '<option' + (c.pay === payArr[p] ? ' selected' : '') + '>' + payArr[p] + '</option>';
+
+  var h = '<div style="display:grid;gap:10px">';
+  h += '<div class="fg"><label>Nombre completo</label><input type="text" id="e-nom" value="' + (c.nom || '') + '"></div>';
+  h += '<div class="fr"><div class="fg"><label>DNI</label><input type="number" id="e-dni" value="' + (c.dni || '') + '"></div>';
+  h += '<div class="fg"><label>Celular</label><input type="tel" id="e-cel" value="' + (c.cel || '') + '"></div></div>';
+  h += '<div class="fg"><label>Dirección cliente</label><input type="text" id="e-dir" value="' + (c.dir || '') + '"></div>';
+  h += '<div class="fr"><div class="fg"><label>Tipo de show</label><select id="e-show">' + sOpts + '</select></div>';
+  h += '<div class="fg"><label>Tipo de evento</label><select id="e-tev">' + tOpts + '</select></div></div>';
+  h += '<div class="fr"><div class="fg"><label>Ciudad</label><input type="text" id="e-ciu" value="' + (c.ciu || 'Juliaca') + '"></div>';
+  h += '<div class="fg"><label>Fecha</label><input type="date" id="e-fec" value="' + (c.fec || '') + '"></div></div>';
+  h += '<div class="fg"><label>Dirección del evento</label><input type="text" id="e-dev" value="' + (c.dev || '') + '"></div>';
+  h += '<div class="fr"><div class="fg"><label>Hora inicio</label><input type="time" id="e-hi" value="' + (c.hi || '') + '"></div>';
+  h += '<div class="fg"><label>Hora fin</label><input type="time" id="e-hf" value="' + (c.hf || '') + '"></div></div>';
+  h += '<div class="f3"><div class="fg"><label>💜 Total</label><input type="number" id="e-tot" value="' + (c.tot || 0) + '" oninput="eCalc()"></div>';
+  h += '<div class="fg"><label>💛 Adelanto</label><input type="number" id="e-ade" value="' + (c.ade || 0) + '" oninput="eCalc()"></div>';
+  h += '<div class="fg"><label>💚 Saldo</label><input type="number" id="e-sal" value="' + (c.sal || 0) + '" readonly></div></div>';
+  h += '<div class="fr"><div class="fg"><label>Método de pago</label><select id="e-pay">' + pOpts + '</select></div>';
+  h += '<div class="fg"><label>N° Operación</label><input type="text" id="e-op" value="' + (c.op || '') + '"></div></div>';
+  h += '<div class="fg"><label>Titular del pago</label><input type="text" id="e-tit" value="' + (c.tit || '') + '"></div>';
+  h += '<div class="fg"><label>Google Maps URL</label><input type="url" id="e-map" value="' + (c.map || '') + '"></div>';
+  h += '</div>';
+  document.getElementById('m-edit-body').innerHTML = h;
+  openM('m-edit');
+}
+
+function eCalc() {
+  var t = parseFloat(document.getElementById('e-tot').value) || 0;
+  var a = parseFloat(document.getElementById('e-ade').value) || 0;
+  document.getElementById('e-sal').value = Math.max(0, t - a).toFixed(0);
+}
+
+function saveEdit() {
+  var c = DB.find(function(x) { return x.id === curId; });
+  if (!c) return;
+  c.nom  = document.getElementById('e-nom').value.trim();
+  c.dni  = document.getElementById('e-dni').value;
+  c.cel  = document.getElementById('e-cel').value;
+  c.dir  = document.getElementById('e-dir').value;
+  c.show = document.getElementById('e-show').value;
+  c.tev  = document.getElementById('e-tev').value;
+  c.ciu  = document.getElementById('e-ciu').value;
+  c.fec  = document.getElementById('e-fec').value;
+  c.dev  = document.getElementById('e-dev').value;
+  c.hi   = document.getElementById('e-hi').value;
+  c.hf   = document.getElementById('e-hf').value;
+  c.tot  = parseFloat(document.getElementById('e-tot').value) || 0;
+  c.ade  = parseFloat(document.getElementById('e-ade').value) || 0;
+  c.sal  = parseFloat(document.getElementById('e-sal').value) || 0;
+  c.pay  = document.getElementById('e-pay').value;
+  c.op   = document.getElementById('e-op').value;
+  c.tit  = document.getElementById('e-tit').value;
+  c.map  = document.getElementById('e-map').value;
+  save(); closeM('m-edit'); renderList(); renderDash(); toast('✅ Contrato actualizado');
+}
+
+// ════════════════════════════════════
+// DASHBOARD
+// ════════════════════════════════════
+function renderDash() {
+  var now = new Date();
+  var ws = new Date(now); ws.setDate(now.getDate() - now.getDay()); ws.setHours(0,0,0,0);
+  var we = new Date(ws); we.setDate(ws.getDate() + 6);
+  var mT=0, mC=0, sT=0, sC=0, aT=0, aC=0, co=0;
+  for (var i = 0; i < DB.length; i++) {
+    var c = DB[i];
+    var d = new Date(c.fec + 'T12:00:00');
+    if (d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear()) { mT += c.tot; mC++; }
+    if (d >= ws && d <= we) { sT += c.tot; sC++; }
+    if (d.getFullYear() === now.getFullYear()) { aT += c.tot; aC++; }
+    if (c.est !== 'done') co += c.sal;
+  }
+  document.getElementById('d-mes').textContent = 'S/.' + mT;
+  document.getElementById('d-mes-n').textContent = mC + ' show' + (mC !== 1 ? 's' : '');
+  document.getElementById('d-sem').textContent = 'S/.' + sT;
+  document.getElementById('d-sem-n').textContent = sC + ' show' + (sC !== 1 ? 's' : '');
+  document.getElementById('d-ano').textContent = 'S/.' + aT;
+  document.getElementById('d-ano-n').textContent = aC + ' shows';
+  document.getElementById('d-cob').textContent = 'S/.' + co;
+
+  var up = DB.filter(function(c) { return new Date(c.fec + 'T23:59:59') >= now; })
+             .sort(function(a,b) { return new Date(a.fec) - new Date(b.fec); }).slice(0, 5);
+  var el = document.getElementById('upcoming');
+  if (!up.length) {
+    el.innerHTML = '<div class="empty"><span class="ee">🎪</span><p>No hay shows próximos.<br>¡Crea un nuevo contrato!</p></div>';
+    return;
+  }
+  var html = '';
+  for (var j = 0; j < up.length; j++) {
+    var u = up[j];
+    var ud = new Date(u.fec + 'T12:00:00');
+    html += '<div class="upi">'
+          + '<div class="upd"><div class="dy">' + ud.getDate() + '</div><div class="mn">' + MESA[ud.getMonth()] + '</div></div>'
+          + '<div class="upin"><div class="upt">' + u.nom + '</div><div class="ups">🕐 ' + u.hi + ' · ' + u.show + ' · ' + u.ciu + '</div></div>'
+          + '<div style="font-weight:900;color:var(--gn);flex-shrink:0;text-align:right;font-size:13px">S/.' + u.tot + '</div>'
+          + '</div>';
+  }
+  el.innerHTML = html;
+}
+
+// ════════════════════════════════════
+// FINANZAS
+// ════════════════════════════════════
+function selPer(p, el) {
+  var ptts = document.querySelectorAll('.ptt');
+  for (var i = 0; i < ptts.length; i++) ptts[i].classList.remove('act');
+  el.classList.add('act');
+  curPer = p;
+  renderFin();
+}
+
+function renderFin() {
+  var now = new Date();
+  var items = [], label = '', cht = '';
+  if (curPer === 'sem') {
+    var ws = new Date(now); ws.setDate(now.getDate() - now.getDay()); ws.setHours(0,0,0,0);
+    var we = new Date(ws); we.setDate(ws.getDate() + 6);
+    items = DB.filter(function(c) { var d = new Date(c.fec + 'T12:00:00'); return d >= ws && d <= we; });
+    label = 'Esta semana'; cht = 'Por día (esta semana)';
+  } else if (curPer === 'mes') {
+    items = DB.filter(function(c) { var d = new Date(c.fec + 'T12:00:00'); return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear(); });
+    label = 'Este mes'; cht = 'Por semana (este mes)';
+  } else {
+    items = DB.filter(function(c) { return new Date(c.fec + 'T12:00:00').getFullYear() === now.getFullYear(); });
+    label = 'Este año'; cht = 'Por mes (este año)';
+  }
+  var tot = 0, cob = 0, pen = 0;
+  for (var i = 0; i < items.length; i++) { tot += items[i].tot; cob += items[i].ade; if (items[i].est !== 'done') pen += items[i].sal; }
+  document.getElementById('fv').textContent = 'S/. ' + tot.toFixed(2);
+  document.getElementById('fp').textContent = label;
+  document.getElementById('fc').textContent = items.length;
+  document.getElementById('fco').textContent = 'S/.' + cob;
+  document.getElementById('fpe').textContent = 'S/.' + pen;
+  document.getElementById('fct').textContent = cht;
+
+  // Chart
+  var cd = [];
+  if (curPer === 'sem') {
+    var ws2 = new Date(now); ws2.setDate(now.getDate() - now.getDay()); ws2.setHours(0,0,0,0);
+    var dn = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+    for (var d = 0; d < 7; d++) {
+      var dw = new Date(ws2); dw.setDate(ws2.getDate() + d);
+      var dc = items.filter(function(c) { return new Date(c.fec + 'T12:00:00').toDateString() === dw.toDateString(); });
+      var vv = 0; for (var k = 0; k < dc.length; k++) vv += dc[k].tot;
+      cd.push({l: dn[d], v: vv, n: dc.length});
+    }
+  } else if (curPer === 'mes') {
+    for (var w = 1; w <= 5; w++) {
+      (function(ww) {
+        var wc = items.filter(function(c) { return Math.ceil(new Date(c.fec + 'T12:00:00').getDate() / 7) === ww; });
+        var vv = 0; for (var k = 0; k < wc.length; k++) vv += wc[k].tot;
+        cd.push({l: 'Sem' + ww, v: vv, n: wc.length});
+      })(w);
+    }
+  } else {
+    for (var m = 0; m < 12; m++) {
+      (function(mm) {
+        var mc = items.filter(function(c) { return new Date(c.fec + 'T12:00:00').getMonth() === mm; });
+        var vv = 0; for (var k = 0; k < mc.length; k++) vv += mc[k].tot;
+        cd.push({l: MESA[mm], v: vv, n: mc.length});
+      })(m);
+    }
+  }
+  var mx = 1;
+  for (var x = 0; x < cd.length; x++) if (cd[x].v > mx) mx = cd[x].v;
+  var chartHtml = '';
+  for (var ci = 0; ci < cd.length; ci++) {
+    var pt = Math.round(cd[ci].v / mx * 100);
+    if (curPer === 'ano' && cd[ci].v === 0) continue;
+    chartHtml += '<div class="cbr"><div class="cbl">' + cd[ci].l + '</div>'
+              + '<div class="cbt"><div class="cbf" style="width:' + pt + '%">' + (cd[ci].n > 0 ? cd[ci].n + '🎪' : '') + '</div></div>'
+              + '<div class="cbv">' + (cd[ci].v > 0 ? 'S/.' + cd[ci].v : '') + '</div></div>';
+  }
+  document.getElementById('fchart').innerHTML = chartHtml || '<div class="empty" style="padding:12px"><p>Sin datos</p></div>';
+
+  // Shows list
+  if (!items.length) {
+    document.getElementById('fshows').innerHTML = '<div class="empty" style="padding:12px 0"><p>Sin shows en este período</p></div>';
+    return;
+  }
+  var sorted = items.slice().sort(function(a,b) { return new Date(b.fec) - new Date(a.fec); });
+  var shHtml = '';
+  for (var si = 0; si < sorted.length; si++) {
+    var sc = sorted[si];
+    var sd = new Date(sc.fec + 'T12:00:00');
+    var sbg = sc.est === 'done' ? 'linear-gradient(135deg,var(--gn),#15803D)' : 'linear-gradient(135deg,var(--pu),var(--pk))';
+    shHtml += '<div class="upi">'
+           + '<div class="upd" style="background:' + sbg + '"><div class="dy">' + sd.getDate() + '</div><div class="mn">' + MESA[sd.getMonth()] + '</div></div>'
+           + '<div class="upin"><div class="upt">' + sc.nom + '</div><div class="ups">' + sc.show + ' · ' + sc.pay + '</div></div>'
+           + '<div style="text-align:right;flex-shrink:0">'
+           + '<div style="font-weight:900;color:var(--pu);font-size:13px">S/.' + sc.tot + '</div>'
+           + (sc.est !== 'done' ? '<small style="color:var(--ye);font-weight:700;font-size:10px">-S/.' + sc.sal + ' pend.</small>' : '<small style="color:var(--gn);font-weight:700;font-size:10px">✅ Cobrado</small>')
+           + '</div></div>';
+  }
+  document.getElementById('fshows').innerHTML = shHtml;
+}
+
+// ════════════════════════════════════
+// PWA INSTALL
+// ════════════════════════════════════
+var pwaPrompt = null;
+window.addEventListener('beforeinstallprompt', function(e) {
+  e.preventDefault();
+  pwaPrompt = e;
+  document.getElementById('ib').style.display = 'block';
+});
+function doPWA() {
+  if (pwaPrompt) {
+    pwaPrompt.prompt();
+    pwaPrompt.userChoice.then(function() {
+      pwaPrompt = null;
+      document.getElementById('ib').style.display = 'none';
+    });
+  }
+}
+window.addEventListener('appinstalled', function() {
+  document.getElementById('ib').style.display = 'none';
+  toast('🎉 ¡App instalada en tu pantalla!');
+});
+
+// ════════════════════════════════════
+// INIT — sample data
+// ════════════════════════════════════
+if (DB.length === 0) {
+  var n2 = new Date();
+  var fmt = function(d) { return d.toISOString().split('T')[0]; };
+  var d1 = new Date(n2); d1.setDate(n2.getDate() + 4);
+  var d2 = new Date(n2); d2.setDate(n2.getDate() + 9);
+  var d3 = new Date(n2); d3.setDate(n2.getDate() - 2);
+  DB = [
+    {id:1,nom:'William Walter Mamani Aracayo',dni:'',cel:'977668844',dir:'San Miguel',show:'Inicio Escolar',tev:'Bienvenida de Inicio Escolar',ciu:'San Miguel',dev:'IEI.609 Divino Niño Jesús Collasuyo',fec:fmt(d1),hi:'11:00',hf:'12:30',tot:250,ade:100,sal:150,pay:'Yape',op:'5724855',tit:'',cont:'vir',map:'',est:'pend',cre:new Date().toISOString()},
+    {id:2,nom:'Yolanda Coaquira Coaquira',dni:'41240728',cel:'951168903',dir:'Juliaca',show:'Inicio Escolar',tev:'Bienvenida de Inicio Escolar',ciu:'Juliaca',dev:'Inicial 303 Niño de la Espina',fec:fmt(d2),hi:'09:30',hf:'11:00',tot:250,ade:50,sal:200,pay:'Plin',op:'04421007',tit:'',cont:'vir',map:'',est:'pend',cre:new Date().toISOString()},
+    {id:3,nom:'Cliente de Ejemplo',dni:'12345678',cel:'987654321',dir:'Juliaca',show:'Show Familiar',tev:'Cumpleaños',ciu:'Juliaca',dev:'Av. Principal 123',fec:fmt(d3),hi:'15:00',hf:'17:00',tot:300,ade:150,sal:0,pay:'Yape',op:'',tit:'',cont:'vir',map:'',est:'done',cre:new Date().toISOString()}
+  ];
+  save();
+}
+renderDash();
+</script>
+</body>
+</html>
