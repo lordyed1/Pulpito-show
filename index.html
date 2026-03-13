@@ -1136,7 +1136,7 @@ function renderFin() {
 // ════════════════════════════════════
 // GOOGLE SHEETS SYNC
 // ════════════════════════════════════
-var SHEET_URL = localStorage.getItem('ps_sheet_url') || 'https://script.google.com/macros/s/AKfycbzRGE_xGMI8yDHDU3acZWc-sKsi1yK37UjkmJyA0OFwrKaBRhiPbz27tbiFRc_w5z99/exec';
+var SHEET_URL = localStorage.getItem('ps_sheet_url') || 'https://script.google.com/macros/s/AKfycbxS0GCvo3uPkZe3FKFeuuEyfS9jTF7mBmWMNxC7FTR_ZRz1Ki3sJccc0aOAfVN4iVjs/exec';
 var syncing = false;
 var lastSync = null;
 
@@ -1178,7 +1178,7 @@ function initSync() {
 }
 
 function syncNow() {
-  if (!SHEET_URL) { toast('⚠️ Sin URL de sincronización'); return; }
+  if (!SHEET_URL) { toast('Sin URL de sincronizacion'); return; }
   if (syncing) return;
   syncing = true;
   setSyncDot('#F59E0B');
@@ -1187,30 +1187,36 @@ function syncNow() {
   if (msgEl) msgEl.textContent = 'Sincronizando...';
   if (subEl) subEl.textContent = 'Conectando con Google Sheets...';
 
-  // Push local data
-  var payload = JSON.stringify({ action: 'push', data: DB });
-  fetch(SHEET_URL, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: { 'Content-Type': 'text/plain' },
-    body: payload
-  }).then(function() {
-    // Pull remote data
+  // Strategy: GET-only to avoid CORS issues with Apps Script
+  // First push via GET with data encoded
+  var cleanDB = DB.map(function(c) {
+    var copy = {};
+    var keys = Object.keys(c);
+    for (var k = 0; k < keys.length; k++) {
+      if (keys[k] !== 'vou') copy[keys[k]] = c[keys[k]];
+    }
+    return copy;
+  });
+
+  var pushUrl = SHEET_URL + '?action=push&data=' + encodeURIComponent(JSON.stringify(cleanDB)) + '&t=' + Date.now();
+
+  fetch(pushUrl)
+  .then(function(r) { return r.json(); })
+  .then(function(res) {
+    // Now pull
     return fetch(SHEET_URL + '?action=pull&t=' + Date.now());
-  }).then(function(r) { return r.json(); })
+  })
+  .then(function(r) { return r.json(); })
   .then(function(remote) {
     if (remote && remote.data && Array.isArray(remote.data)) {
-      // Merge: remote wins for conflicts, keep local voucher images
       var remoteMap = {};
       remote.data.forEach(function(c) { remoteMap[c.id] = c; });
       var localMap = {};
       DB.forEach(function(c) { localMap[c.id] = c; });
-      // Union of both
+      var allIds = Object.keys(Object.assign({}, remoteMap, localMap));
       var merged = [];
-      var allIds = new Set(Object.keys(remoteMap).concat(Object.keys(localMap)));
       allIds.forEach(function(id) {
         if (remoteMap[id] && localMap[id]) {
-          // Both exist: use remote but keep local voucher image
           var c = Object.assign({}, remoteMap[id]);
           if (localMap[id].vou) c.vou = localMap[id].vou;
           merged.push(c);
@@ -1224,54 +1230,20 @@ function syncNow() {
       DB = merged;
       save();
       renderDash();
-      renderList();
+      if (document.getElementById('p2').classList.contains('act')) renderList();
       lastSync = new Date();
-      var ts = lastSync.getHours() + ':' + String(lastSync.getMinutes()).padStart(2,'0');
-      updateSyncUI(true, '✅ Sincronizado', 'Última sync: ' + ts);
+      var hh = lastSync.getHours();
+      var mm = String(lastSync.getMinutes()).padStart(2,'0');
+      updateSyncUI(true, 'Sincronizado', 'Ultima sync: ' + hh + ':' + mm);
+    } else {
+      updateSyncUI(true, 'Conectado', 'Datos enviados a la nube');
     }
     syncing = false;
   })
   .catch(function(err) {
-    console.log('Sync push ok (no-cors), pulling...', err);
-    // After push with no-cors, do pull
-    fetch(SHEET_URL + '?action=pull&t=' + Date.now())
-    .then(function(r) { return r.json(); })
-    .then(function(remote) {
-      if (remote && remote.data && Array.isArray(remote.data)) {
-        var remoteMap = {};
-        remote.data.forEach(function(c) { remoteMap[c.id] = c; });
-        var localMap = {};
-        DB.forEach(function(c) { localMap[c.id] = c; });
-        var merged = [];
-        var allIds = Object.keys(Object.assign({}, remoteMap, localMap));
-        allIds.forEach(function(id) {
-          if (remoteMap[id] && localMap[id]) {
-            var c = Object.assign({}, remoteMap[id]);
-            if (localMap[id].vou) c.vou = localMap[id].vou;
-            merged.push(c);
-          } else if (remoteMap[id]) {
-            merged.push(remoteMap[id]);
-          } else {
-            merged.push(localMap[id]);
-          }
-        });
-        merged.sort(function(a,b) { return new Date(b.cre||0) - new Date(a.cre||0); });
-        DB = merged;
-        save();
-        renderDash();
-        if (document.querySelector('#p2.act')) renderList();
-        lastSync = new Date();
-        var ts = lastSync.getHours() + ':' + String(lastSync.getMinutes()).padStart(2,'0');
-        updateSyncUI(true, '✅ Sincronizado', 'Última sync: ' + ts);
-      } else {
-        updateSyncUI(true, '☁️ Conectado', 'Datos enviados a la nube');
-      }
-      syncing = false;
-    })
-    .catch(function(e2) {
-      syncing = false;
-      updateSyncUI(false, '⚠️ Sin internet', 'Datos guardados localmente');
-    });
+    console.log('Sync error:', err);
+    syncing = false;
+    updateSyncUI(false, 'Sin conexion a la nube', 'Datos guardados localmente');
   });
 }
 
