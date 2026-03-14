@@ -575,16 +575,23 @@ function loadVou(inp) {
 
 function guardar() {
   var c = fromForm();
-  if (!c.nom) { toast('⚠️ Ingresa el nombre del cliente'); return; }
-  if (!c.fec) { toast('⚠️ Selecciona la fecha'); return; }
-  if (!c.hi)  { toast('⚠️ Ingresa la hora de inicio'); return; }
-  if (!c.tot) { toast('⚠️ Ingresa el precio total'); return; }
-  if (!cShow) { toast('⚠️ Selecciona el tipo de show'); return; }
-  if (!cCont) { toast('⚠️ Selecciona el tipo de contrato'); return; }
+  if (!c.nom) { toast('\u26a0\ufe0f Ingresa el nombre del cliente'); return; }
+  if (!c.fec) { toast('\u26a0\ufe0f Selecciona la fecha'); return; }
+  if (!c.hi)  { toast('\u26a0\ufe0f Ingresa la hora de inicio'); return; }
+  if (!c.tot) { toast('\u26a0\ufe0f Ingresa el precio total'); return; }
+  if (!cShow) { toast('\u26a0\ufe0f Selecciona el tipo de show'); return; }
+  if (!cCont) { toast('\u26a0\ufe0f Selecciona el tipo de contrato'); return; }
   DB.unshift(c);
   save();
+  // Auto-sync after saving
+  if (SHEET_URL) { setTimeout(function(){ syncNow(); }, 800); }
   limpiar();
   showOk(c);
+  // Auto-open Google Calendar
+  setTimeout(function() {
+    var url = gcURL(c);
+    window.open(url, '_blank');
+  }, 1200);
 }
 
 // ════════════════════════════════════
@@ -1185,10 +1192,9 @@ function syncNow() {
   var msgEl = document.getElementById('sync-msg');
   var subEl = document.getElementById('sync-sub');
   if (msgEl) msgEl.textContent = 'Sincronizando...';
-  if (subEl) subEl.textContent = 'Conectando con Google Sheets...';
+  if (subEl) subEl.textContent = 'Enviando datos...';
 
-  // Strategy: GET-only to avoid CORS issues with Apps Script
-  // First push via GET with data encoded
+  // Step 1: push local data via GET (encodes data in URL)
   var cleanDB = DB.map(function(c) {
     var copy = {};
     var keys = Object.keys(c);
@@ -1198,53 +1204,72 @@ function syncNow() {
     return copy;
   });
 
-  var pushUrl = SHEET_URL + '?action=push&data=' + encodeURIComponent(JSON.stringify(cleanDB)) + '&t=' + Date.now();
+  var encoded = encodeURIComponent(JSON.stringify(cleanDB));
+  var pushUrl = SHEET_URL + '?action=push&data=' + encoded;
 
+  // Use no-cors fetch for push (fire and forget), then pull with regular fetch
+  var pushDone = false;
+
+  // Try regular fetch first (works on desktop/Mac)
   fetch(pushUrl)
   .then(function(r) { return r.json(); })
-  .then(function(res) {
-    // Now pull
+  .then(function() {
     return fetch(SHEET_URL + '?action=pull&t=' + Date.now());
   })
   .then(function(r) { return r.json(); })
   .then(function(remote) {
-    if (remote && remote.data && Array.isArray(remote.data)) {
-      var remoteMap = {};
-      remote.data.forEach(function(c) { remoteMap[c.id] = c; });
-      var localMap = {};
-      DB.forEach(function(c) { localMap[c.id] = c; });
-      var allIds = Object.keys(Object.assign({}, remoteMap, localMap));
-      var merged = [];
-      allIds.forEach(function(id) {
-        if (remoteMap[id] && localMap[id]) {
-          var c = Object.assign({}, remoteMap[id]);
-          if (localMap[id].vou) c.vou = localMap[id].vou;
-          merged.push(c);
-        } else if (remoteMap[id]) {
-          merged.push(remoteMap[id]);
-        } else {
-          merged.push(localMap[id]);
-        }
-      });
-      merged.sort(function(a,b) { return new Date(b.cre||0) - new Date(a.cre||0); });
-      DB = merged;
-      save();
-      renderDash();
-      if (document.getElementById('p2').classList.contains('act')) renderList();
-      lastSync = new Date();
-      var hh = lastSync.getHours();
-      var mm = String(lastSync.getMinutes()).padStart(2,'0');
-      updateSyncUI(true, 'Sincronizado', 'Ultima sync: ' + hh + ':' + mm);
-    } else {
-      updateSyncUI(true, 'Conectado', 'Datos enviados a la nube');
-    }
-    syncing = false;
+    mergePull(remote);
   })
-  .catch(function(err) {
-    console.log('Sync error:', err);
-    syncing = false;
-    updateSyncUI(false, 'Sin conexion a la nube', 'Datos guardados localmente');
+  .catch(function() {
+    // Fallback: try no-cors push + direct pull (for mobile CORS issues)
+    fetch(pushUrl, { mode: 'no-cors' })
+    .then(function() {
+      return fetch(SHEET_URL + '?action=pull&t=' + Date.now());
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(remote) {
+      mergePull(remote);
+    })
+    .catch(function(err) {
+      console.log('Sync error:', err);
+      syncing = false;
+      updateSyncUI(false, 'Sin conexion a la nube', 'Datos guardados localmente');
+    });
   });
+}
+
+function mergePull(remote) {
+  if (remote && remote.data && Array.isArray(remote.data)) {
+    var remoteMap = {};
+    remote.data.forEach(function(c) { remoteMap[c.id] = c; });
+    var localMap = {};
+    DB.forEach(function(c) { localMap[c.id] = c; });
+    var allIds = Object.keys(Object.assign({}, remoteMap, localMap));
+    var merged = [];
+    allIds.forEach(function(id) {
+      if (remoteMap[id] && localMap[id]) {
+        var c = Object.assign({}, remoteMap[id]);
+        if (localMap[id].vou) c.vou = localMap[id].vou;
+        merged.push(c);
+      } else if (remoteMap[id]) {
+        merged.push(remoteMap[id]);
+      } else {
+        merged.push(localMap[id]);
+      }
+    });
+    merged.sort(function(a,b) { return new Date(b.cre||0) - new Date(a.cre||0); });
+    DB = merged;
+    save();
+    renderDash();
+    if (document.getElementById('p2').classList.contains('act')) renderList();
+    lastSync = new Date();
+    var hh = lastSync.getHours();
+    var mm = String(lastSync.getMinutes()).padStart(2,'0');
+    updateSyncUI(true, 'Sincronizado', 'Ultima sync: ' + hh + ':' + mm);
+  } else {
+    updateSyncUI(true, 'Conectado', 'Datos enviados');
+  }
+  syncing = false;
 }
 
 // Auto-sync every 2 minutes
